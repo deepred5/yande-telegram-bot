@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 const { port, token } = config;
 
-app.get('/', (req, res) => res.send('Hello World yanre!'));
+app.get('/', (req, res) => res.send('Hello World yande!'));
 
 app.post(`/bot${token}`, (req, res) => {
   bot.processUpdate(req.body);
@@ -18,6 +18,6 @@ app.post(`/bot${token}`, (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Express server is listening on ${port}`);
+  console.log(`Yande Bot ぺろぺろ/ペロペロ on ${port}`);
   cron.initTask(bot);
 });
