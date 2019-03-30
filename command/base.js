@@ -20,7 +20,7 @@ const getInlinekeyboard = (tags, command) => {
 const sendPicCommand = (bot) => {
   return (chatId, pics) => {
     pics.forEach(img => {
-      const tagArr = img.tags.split(' ').filter(tag => tag.length < 50).slice(0, 6);
+      const tagArr = img.tags.split(' ').filter(tag => tag.length < 40).slice(0, 6);
       const tagsHtml = getTagsHtml(tagArr);
       const inlineKeyboard = getInlinekeyboard(tagArr, '/tag');
 

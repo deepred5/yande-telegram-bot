@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const config = require('./config');
 const bot = require('./bot');
+const cron = require('./cron');
 
 const app = express();
 app.use(bodyParser.json());
@@ -18,4 +19,5 @@ app.post(`/bot${token}`, (req, res) => {
 
 app.listen(port, () => {
   console.log(`Express server is listening on ${port}`);
+  cron.initTask(bot);
 });

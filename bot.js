@@ -2,11 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const Agent = require('socks5-https-client/lib/Agent');
 
 const config = require('./config');
-const latestCommand = require('./command/latest');
-const tagCommand = require('./command/tag');
-const randomCommand = require('./command/random');
-const popularCommand = require('./command/popular');
-
+const command = require('./command');
 
 let botConfig = {};
 
@@ -20,8 +16,8 @@ if (process.env.dev) {
   }
 }
 
-const token = config.token;
-const url = config.url;
+const { token, url } = config;
+
 const bot = new TelegramBot(token, botConfig);
 
 if (!process.env.dev) {
@@ -34,26 +30,40 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
+const {
+  latestCommand,
+  tagCommand,
+  randomCommand,
+  popularCommand,
+  helpCommand,
+  aboutCommand
+} = command;
+
+const helpHandler = helpCommand(bot);
 const latestHandler = latestCommand(bot);
 const tagHandler = tagCommand(bot);
 const randomHandler = randomCommand(bot);
 const popularHandler = popularCommand(bot);
+const aboutHandler = aboutCommand(bot);
 
+bot.onText(/\/start/, helpHandler);
+bot.onText(/\/help/, helpHandler);
+bot.onText(/\/about/, aboutHandler);
 bot.onText(/\/latest\s?(\d+)?/, latestHandler);
 bot.onText(/\/random\s?(\d+)?/, randomHandler);
 bot.onText(/\/tag ([a-zA-Z0-9_]+)\s?(\d+)?/, tagHandler);
 bot.onText(/\/popular\s?(.+)?/, popularHandler);
 
-// bot.on('message', (msg) => {
-//   const chatId = msg.chat.id;
-//   bot.sendMessage(chatId, `Received your message: ${msg.text}`);
-// });
+bot.on('message', (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, `Received your message: ${msg.text}`);
+});
 
 
 bot.on("callback_query", function (data) {
   const callbackData = JSON.parse(data.data);
   if (callbackData.command === '/tag') {
-    const match = [null, callbackData.data, 5];
+    const match = ['/tag', callbackData.data, 5];
     const msg = {
       chat: {
         id: data.from.id
@@ -70,11 +80,10 @@ bot.on("callback_query", function (data) {
 });
 
 
-
 process.on('uncaughtException', function (error) {
   console.log("\x1b[31m", "Exception: ", error, "\x1b[0m");
 });
-process.on('unhandledRejection', function (error, p) {
+process.on('unhandledRejection', function (error) {
   console.log("\x1b[31m", "Error: ", error.message, "\x1b[0m");
 });
 
