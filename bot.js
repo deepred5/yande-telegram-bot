@@ -46,7 +46,10 @@ const randomHandler = randomCommand(bot);
 const popularHandler = popularCommand(bot);
 const aboutHandler = aboutCommand(bot);
 
-bot.onText(/\/start/, helpHandler);
+bot.onText(/\/start/, (msg, match) => {
+  aboutHandler(msg, match);
+  helpHandler(msg, match);
+});
 bot.onText(/\/help/, helpHandler);
 bot.onText(/\/about/, aboutHandler);
 bot.onText(/\/latest\s?(\d+)?/, latestHandler);
@@ -54,10 +57,10 @@ bot.onText(/\/random\s?(\d+)?/, randomHandler);
 bot.onText(/\/tag ([a-zA-Z0-9_]+)\s?(\d+)?/, tagHandler);
 bot.onText(/\/popular\s?(.+)?/, popularHandler);
 
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, `Received your message: ${msg.text}`);
-});
+// bot.on('message', (msg) => {
+//   const chatId = msg.chat.id;
+//   bot.sendMessage(chatId, `Received your message: ${msg.text}`);
+// });
 
 
 bot.on("callback_query", function (data) {
