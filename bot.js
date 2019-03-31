@@ -66,7 +66,7 @@ bot.onText(/\/popular\s?(.+)?/, popularHandler);
 bot.onText(/\/channel (.+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const resp = match[1];
-  if (chatId === 874622480) {
+  if (chatId === config.myId) {
     bot.sendMessage(config.dailyYandeChannelId, resp);
   }
 });

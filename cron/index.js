@@ -35,10 +35,10 @@ const initTask = (bot) => {
   // 每周21:00发送本周popular
   cron.schedule('0 21 * * 0', getPeriod(bot, '1w'));
 
-  // 测试发送
-  bot.onText(/\/testChannel (.+)/, (msg, match) => {
+  
+  bot.onText(/\/sendPopular (.+)/, (msg, match) => {
     const resp = match[1];
-    if (msg.chat.id === 874622480) {
+    if (msg.chat.id === config.myId) {
       getPeriod(bot, resp)();
     }
   });
