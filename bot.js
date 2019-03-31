@@ -62,6 +62,14 @@ bot.onText(/\/popular\s?(.+)?/, popularHandler);
 //   bot.sendMessage(chatId, `Received your message: ${msg.text}`);
 // });
 
+// admin权限，向channel发送消息
+bot.onText(/\/channel (.+)/, (msg, match) => {
+  const chatId = msg.chat.id;
+  const resp = match[1];
+  if (chatId === 874622480) {
+    bot.sendMessage(config.dailyYandeChannelId, resp);
+  }
+});
 
 bot.on("callback_query", function (data) {
   const callbackData = JSON.parse(data.data);

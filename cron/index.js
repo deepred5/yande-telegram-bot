@@ -37,7 +37,9 @@ const initTask = (bot) => {
 
   // 测试发送
   bot.onText(/\/testChannel/, (msg, match) => {
-    getPeriod(bot, '1m')
+    if (msg.chat.id === 874622480) {
+      getPeriod(bot, '1m')();
+    }
   });
 }
 
