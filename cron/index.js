@@ -12,10 +12,10 @@ const getPeriod = (bot, period) => async () => {
   }));
 
   const titleMap = {
-    '1d': '每日',
-    '1w': '每周',
-    '1m': '每月',
-    '1y': '每年'
+    '1d': '本日',
+    '1w': '本周',
+    '1m': '本月',
+    '1y': '本年'
   };
 
   bot.sendMessage(config.dailyYandeChannelId, `${titleMap[period]}POPULAR`);
@@ -36,9 +36,10 @@ const initTask = (bot) => {
   cron.schedule('0 21 * * 0', getPeriod(bot, '1w'));
 
   // 测试发送
-  bot.onText(/\/testChannel/, (msg, match) => {
+  bot.onText(/\/testChannel (.+)/, (msg, match) => {
+    const resp = match[1];
     if (msg.chat.id === 874622480) {
-      getPeriod(bot, '1m')();
+      getPeriod(bot, resp)();
     }
   });
 }
