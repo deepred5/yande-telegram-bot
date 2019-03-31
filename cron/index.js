@@ -1,16 +1,29 @@
 const cron = require('node-cron');
 const http = require('../service/http');
 const config = require('../config');
+const util = require('../util');
 
 const getPeriod = (bot, period) => async () => {
-  const { data = [] } = await http.getYandePopularPic({ period });
+  let { data = [] } = await http.getYandePopularPic({ period });
+
+  data = data.filter((item) => item.file_size < 4.8 * 1024 * 1024).map((item) => ({
+    type: 'photo',
+    media: item.file_url
+  }));
+
   const titleMap = {
     '1d': '每日',
-    '1w': '每周'
-  }
+    '1w': '每周',
+    '1m': '每月',
+    '1y': '每年'
+  };
+
   bot.sendMessage(config.dailyYandeChannelId, `${titleMap[period]}POPULAR`);
-  data.forEach(img => {
-    bot.sendPhoto(config.dailyYandeChannelId, img.file_url);
+
+  const mediaArr = util.group(data, 6);
+
+  mediaArr.forEach((media) => {
+    bot.sendMediaGroup(config.dailyYandeChannelId, media);
   });
 };
 
@@ -21,6 +34,11 @@ const initTask = (bot) => {
 
   // 每周21:00发送本周popular
   cron.schedule('0 21 * * 0', getPeriod(bot, '1w'));
+
+  // 测试发送
+  bot.onText(/\/testChannel/, (msg, match) => {
+    getPeriod(bot, '1m')
+  });
 }
 
 module.exports = {

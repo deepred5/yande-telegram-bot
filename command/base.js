@@ -19,6 +19,9 @@ const getInlinekeyboard = (tags, command) => {
 
 const sendPicCommand = (bot) => {
   return (chatId, pics) => {
+    // 图片小于5M
+    pics = pics.filter((item) => item.file_size < 4.8 * 1024 * 1024);
+
     pics.forEach(img => {
       const tagArr = img.tags.split(' ').filter(tag => tag.length < 30).slice(0, 6);
       const tagsHtml = getTagsHtml(tagArr);
