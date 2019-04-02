@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node bot.js",
-    "prod": "pm2 start index.js --name yande-bot"
+    "prod": "pm2 start index.js --name yande-bot --log-date-format 'YYYY-MM-DD HH:mm Z'"
   },
   "keywords": [
     "telegram bot",
