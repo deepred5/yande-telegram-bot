@@ -18,7 +18,9 @@ const getPeriod = (bot, period) => async () => {
     '1y': '本年'
   };
 
-  bot.sendMessage(config.dailyYandeChannelId, `${titleMap[period]}POPULAR`);
+  const date = util.dateFormat();
+
+  bot.sendMessage(config.dailyYandeChannelId, `${date}\n${titleMap[period]}POPULAR`);
 
   const mediaArr = util.group(data, 6);
 
