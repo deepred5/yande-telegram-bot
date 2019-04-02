@@ -27,7 +27,7 @@ Telegram搜索`@dailyYande`或者点击这里[dailyYande](https://t.me/dailyYand
 使用`@yande5_bot`机器人管理`@dailyYande` channel，每晚20:00准时发送当日popular图片
 
 
-### 部署教程
+### 部署
 参考[从零开始写一个Telegram Bot](http://anata.me/2019/03/30/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%86%99%E4%B8%80%E4%B8%AATelegram-Bot/#%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2)
 
 `config.js`
@@ -37,6 +37,7 @@ module.exports = {
   socksPassword: '本地开发时的ss梯子密码',
   url: 'webhook模式下的转发地址',
   port: 'webhook模式下express监听端口',
+  myId: '用户Id',
   dailyYandeChannelId: '频道Id' // 需要bot为该频道的管理员
 }
 ```
