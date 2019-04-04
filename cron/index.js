@@ -20,13 +20,24 @@ const getPeriod = (bot, period) => async () => {
 
   const date = util.dateFormat();
 
-  bot.sendMessage(config.dailyYandeChannelId, `${date}\n${titleMap[period]}POPULAR`);
+  const sendId = config.dailyYandeChannelId;
+
+  await bot.sendMessage(sendId, `${date}\n${titleMap[period]}POPULAR`);
 
   const mediaArr = util.group(data, 6);
 
-  mediaArr.forEach((media) => {
-    bot.sendMediaGroup(config.dailyYandeChannelId, media);
+  const promiseArr = mediaArr.map(async (media) => {
+    try {
+      await bot.sendMediaGroup(sendId, media);
+      return 'sendMediaGroup success';
+    } catch(err) {
+      console.error('sendMediaGroup error', error);
+      return 'sendMediaGroup failed';
+    }
   });
+
+  await Promise.all(promiseArr);
+  bot.sendMessage(sendId, `===${date}结束===`);
 };
 
 const initTask = (bot) => {
