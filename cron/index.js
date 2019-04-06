@@ -3,7 +3,7 @@ const http = require('../service/http');
 const config = require('../config');
 const util = require('../util');
 
-const getPeriod = (bot, period) => async () => {
+const getPeriod = (bot, period) => async (onlyMine = false) => {
   let { data = [] } = await http.getYandePopularPic({ period });
 
   data = data.filter((item) => item.file_size < 4.8 * 1024 * 1024).map((item) => ({
@@ -20,24 +20,29 @@ const getPeriod = (bot, period) => async () => {
 
   const date = util.dateFormat();
 
-  const sendId = config.dailyYandeChannelId;
+  const sendId = !onlyMine ? config.dailyYandeChannelId : config.myId;
 
-  await bot.sendMessage(sendId, `${date}\n${titleMap[period]}POPULAR`);
+  try {
+    await bot.sendMessage(sendId, `${date}\n${titleMap[period]}POPULAR`);
 
-  const mediaArr = util.group(data, 6);
+    const mediaArr = util.group(data, 6);
 
-  const promiseArr = mediaArr.map(async (media) => {
-    try {
-      await bot.sendMediaGroup(sendId, media);
-      return 'sendMediaGroup success';
-    } catch(err) {
-      console.error('sendMediaGroup error', error);
-      return 'sendMediaGroup failed';
-    }
-  });
+    const promiseArr = mediaArr.map(async (media) => {
+      try {
+        await bot.sendMediaGroup(sendId, media);
+        return 'sendMediaGroup success';
+      } catch (error) {
+        console.error('sendMediaGroup error', error);
+        return 'sendMediaGroup failed';
+      }
+    });
 
-  await Promise.all(promiseArr);
-  bot.sendMessage(sendId, `===${date}结束===`);
+    await Promise.all(promiseArr);
+    bot.sendMessage(sendId, `===${date}结束===`);
+  } catch (err) {
+    bot.sendMessage(sendId, `===${date}结束===`);
+    console.error('getPeriod error', err);
+  }
 };
 
 const initTask = (bot) => {
@@ -48,11 +53,12 @@ const initTask = (bot) => {
   // 每周21:00发送本周popular
   cron.schedule('0 21 * * 0', getPeriod(bot, '1w'));
 
-  
-  bot.onText(/\/sendPopular (.+)/, (msg, match) => {
+
+  bot.onText(/\/test (1d|1w|1m|1y)\s?([a-zA-Z])?/, (msg, match) => {
     const resp = match[1];
+    const onlyMine = match[2] ? true: false;
     if (msg.chat.id === config.myId) {
-      getPeriod(bot, resp)();
+      getPeriod(bot, resp)(onlyMine);
     }
   });
 }

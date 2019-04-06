@@ -12,6 +12,8 @@ const helpCommand = (bot) => {
       2. /popular 1d(1d/1w/1m/1y) 获取1天(周/月/年)的popular图片
       3. /random 3 获取随机3张图片
       4. /tag bra 3 获取标签为bra的3张图片
+      5. /help 帮助
+      6. /about 关于
     `, { parse_mode: "markdown" });
   }
 }

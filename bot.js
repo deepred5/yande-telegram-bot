@@ -57,10 +57,6 @@ bot.onText(/\/random\s?(\d+)?/, randomHandler);
 bot.onText(/\/tag ([a-zA-Z0-9_]+)\s?(\d+)?/, tagHandler);
 bot.onText(/\/popular\s?(.+)?/, popularHandler);
 
-// bot.on('message', (msg) => {
-//   const chatId = msg.chat.id;
-//   bot.sendMessage(chatId, `Received your message: ${msg.text}`);
-// });
 
 // admin权限，向channel发送消息
 bot.onText(/\/channel (.+)/, (msg, match) => {
