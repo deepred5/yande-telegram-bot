@@ -1,0 +1,12 @@
+{
+  "apps" : [{
+    "name"       : "yande-telegram-bot",
+    "script"     : "./index.js",
+    "env": {
+      "NODE_ENV": "prod"
+    },
+    "instances"  : -1,
+    "exec_mode"  : "cluster",
+    "watch":true
+  }]
+}
