@@ -57,3 +57,8 @@ location /bot${你的token} {
     proxy_set_header Host $host;
 }
 ```
+
+`pm2启动`
+```bash
+pm2 start start.json
+```
