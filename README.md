@@ -7,7 +7,7 @@
 
 <img src="./bot.jpg" width="66" style="border-radius: 50%;">
 
-Telegram搜索`@yande5_bot`或者点击这里[yande5_bot](https://t.me/yande5_bot)
+Telegram搜索`@yande5_bot`或点击这里[yande5_bot](https://t.me/yande5_bot)
 
 使用方法:
 * /latest 3 获取最新3张图片
