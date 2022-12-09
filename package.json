@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "node-cron": "^2.0.3",
     "node-telegram-bot-api": "^0.30.0"
   },
